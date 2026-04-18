@@ -1,0 +1,61 @@
+{
+  "pod_id": "patraservermonitor",
+  "image": "plalelab/patra-server-monitor:0.2.1",
+  "template": "",
+  "description": "PATRA 5-pod monitor with Telegram alerting",
+  "environment_variables": {
+    "TELEGRAM_BOT_TOKEN": "${pods:secrets:TELEGRAM_BOT_TOKEN}",
+    "MONITOR_DB_PATH": "/data/patra-monitor.db",
+    "MONITOR_INTERVAL_SECONDS": "30",
+    "MONITOR_REQUEST_TIMEOUT_SECONDS": "10",
+    "MONITOR_FAILURE_THRESHOLD": "2",
+    "MONITOR_RECOVERY_THRESHOLD": "1",
+    "MONITOR_REMINDER_INTERVAL_MINUTES": "30"
+  },
+  "secret_map": {
+    "TELEGRAM_BOT_TOKEN": "${secret:telegram-bot-token}"
+  },
+  "status_requested": "ON",
+  "volume_mounts": {
+    "/data": {
+      "type": "tapisvolume",
+      "source_id": "patraservermonitor",
+      "sub_path": "",
+      "read_only": false
+    }
+  },
+  "time_to_stop_default": -1,
+  "networking": {
+    "default": {
+      "protocol": "http",
+      "port": 8080,
+      "ip_allow_list": [],
+      "tapis_auth": false,
+      "tapis_auth_response_headers": {},
+      "tapis_auth_allowed_users": [
+        "AUTHORIZED_USERS"
+      ],
+      "tapis_auth_return_path": "/",
+      "tapis_auth_excluded_paths": [],
+      "tapis_auth_excluded_path_regex": [],
+      "cors_allow_origins": [],
+      "cors_allow_methods": [],
+      "cors_allow_headers": [],
+      "cors_allow_credentials": false,
+      "cors_max_age": 100,
+      "tapis_ui_uri": "",
+      "tapis_ui_uri_redirect": false,
+      "tapis_ui_uri_description": ""
+    }
+  },
+  "resources": {
+    "cpu_request": 250,
+    "cpu_limit": 1000,
+    "mem_request": 256,
+    "mem_limit": 1024,
+    "ephemeral_storage_request": -1,
+    "ephemeral_storage_limit": -1,
+    "gpus": 0
+  },
+  "compute_queue": "default"
+}
